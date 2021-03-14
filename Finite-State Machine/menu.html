@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="menu.js"></script>
+</head>
+<body>
+    <h1>FINITE-STATE MACHINE REDUCTION</h1>
+    <form>
+        <label for="numStates">Number of States: </label>
+        <input id="numStates" type="number" min="1">
+        <br>
+        <label for="numAlphabet">Number of elements in the Alphabet</label>
+        <input id="numAlphabet" type="number" min="1">
+        <br>
+        Machine:
+        <br>
+        <label for="mealy">Mealy</label>
+        <input type="radio" name="machine" id="mealy" value="mealy">
+        <br>
+        <label for="moore">Moore</label>
+        <input type="radio" name="machine" id="moore" value="moore">
+        <br>
+        <button type="button" onclick="readyToGo()">Create Table</button>
+    </form>
+</body>
+</html>
