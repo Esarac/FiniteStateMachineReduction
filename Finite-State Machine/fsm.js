@@ -103,6 +103,36 @@ const Fsm = (function(){
         var transitionMatrix = getInputStateMooreTransitionMatrix();
         
         var outputArray = getInputStateMooreOutputArray();
+
+        //First Partition
+        var partition = [];
+        for(s = 0; s < outputArray.length; s++){
+            var foundB = null;
+            for(b = 0; (b < partition.length) && (foundB == null); b++){
+                if(outputArray[s] == outputArray[partition[b][0]]){
+                    foundB = b;
+                }
+            }
+
+            if(foundB == null){
+                var newB = [s];
+                partition.push(newB);
+            }
+            else{
+                partition[foundB].push(s);
+            }
+        }
+
+        //Iterative Partition
+        partition = partitioning(partition, transitionMatrix);
+
+        var connectedMatrix =  floydWarshall(transitionMatrix);
+    };
+
+    const generateOutputMealyTable = function(){//No
+        var transitionMatrix = getInputStateMooreTransitionMatrix();
+        
+        var outputArray = getInputStateMooreOutputArray();
         var outputMatrix = createMooreOutputMatrix(transitionMatrix, outputArray);
 
         var partition = [];
@@ -123,13 +153,7 @@ const Fsm = (function(){
             }
         }
 
-        console.log(partition);
-
         var connectedMatrix =  floydWarshall(transitionMatrix);
-    };
-
-    const generateOutputMealyTable = function(){
-        
     };
 
     //~Get
@@ -211,6 +235,62 @@ const Fsm = (function(){
         return distances;
     };
 
+    const partitioning = function(partition, transitionMatrix){
+        var newPartition = [];
+
+        while(!partitionEquals(partition, newPartition)){
+            if(newPartition.length != 0){
+                partition = newPartition.map((x) => x);
+            }
+            newPartition = [];
+
+            for(b = 0; b < partition.length; b++){
+                var bfElement = partition[b][0];
+    
+                var originalBlock = [bfElement];
+                var newBlock = [];
+    
+                for(s = 1; s < partition[b].length; s++){
+                    //console.log("Block "+b+": "+0+" vs "+s);
+                    var bsElement = partition[b][s];
+    
+                    var sameBlock = true;
+                    for(a = 0; (a < transitionMatrix[s].length) && sameBlock; a++){
+                        var bfTransition = transitionMatrix[bfElement][a];
+                        var bsTransition = transitionMatrix[bsElement][a];
+                        
+                        //console.log("~"+a+":");
+                        //console.log(bfTransition);
+                        //console.log(bsTransition);
+                        if(!verifySameBlock(partition, bfTransition, bsTransition)){
+                            sameBlock = false;
+                        }
+                    }
+    
+                    //console.log("sameBlock: "+sameBlock);
+                    if(sameBlock){
+                        originalBlock.push(bsElement);
+                    }
+                    else{
+                        newBlock.push(bsElement);
+                    }
+                }
+    
+                newPartition.push(originalBlock);
+                if(newBlock.length != 0){
+                    newPartition.push(newBlock);
+                }
+            }
+
+            
+            //console.log("partition:");
+            console.log(partition);
+            //console.log("newPartition:");
+            //console.log(newPartition);
+            //console.log("~~~~~~~~~~~~~~~~");
+        }
+    }
+
     //~NPD
     const verifyEmptyFields = function(){//Verificar si estado existe, verificar que alphabeto no repetido y con valores (no se si colocarlo automatico)
         var empty = false;
@@ -226,13 +306,48 @@ const Fsm = (function(){
         return empty;
     };
 
+    const verifySameBlock = function(partition, a, b){
+        return positionblock(partition, a) == positionblock(partition, b);
+    };
+
+    const positionblock = function(partition, element){
+        var block;
+
+        var run = true;
+        for(i = 0; (i < partition.length) && run; i++){
+            for(j = 0; (j < partition[i].length) && run; j++){
+                if(partition[i][j] == element){
+                    block = i;
+                    run = false;
+                }
+            }
+        }
+
+        return block;
+    };
+
     const arrayEquals = function(a, b) {
         return Array.isArray(a) &&
           Array.isArray(b) &&
           a.length === b.length &&
           a.every((val, index) => val === b[index]);
-    }
-      
+    };
+    
+    const partitionEquals = function(a, b){
+        var eq = false;
+
+        if(a.length == b.length){
+            eq = true;
+
+            for(bl = 0; (bl < a.length) && eq; bl++){
+                if(!arrayEquals(a[bl], b[bl])){
+                    eq = false;
+                }
+            }
+        }
+
+        return eq;
+    };
 
     //Public Values
     return{
