@@ -1,4 +1,4 @@
-const Menu = (function(){
+const Index = (function(){
     //Methods
     const getValues = function(){
         //Get Values
