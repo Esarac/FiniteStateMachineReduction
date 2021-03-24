@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MACHINE</title>
+    <link rel ="stylesheet" href="scss/style.css">
     <script src="./js/fsm.js"></script>
 </head>
 <body onload="Ui.generateInitialTable()">
@@ -12,7 +13,14 @@
         <table id="table1">
         </table>
         <br>
-        <button type="button" onclick="Ui.generateFinalTable()">Create Table</button>
+        <div id="container">
+            <button type="button" onclick="Ui.generateFinalTable()" class="learn-more">
+              <span class="circle" aria-hidden="true">
+                <span class="icon arrow"></span>
+              </span>
+              <span class="button-text">Create Table</span>
+            </button>
+        </div>
         <br>
         <table id="table2">
         </table>

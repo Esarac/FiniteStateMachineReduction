@@ -1,4 +1,6 @@
 const Index = (function(){
+    const ERROR = "Invalid values";
+
     //Methods
     const getValues = function(){
         //Get Values
@@ -7,11 +9,24 @@ const Index = (function(){
         var machine = document.querySelector('input[name=machine]:checked').value;
         
         //Pass Page
-        localStorage.setItem('numStates', numStates);
-        localStorage.setItem('numAlphabet', numAlphabet);
-        localStorage.setItem('machine', machine);
-        window.document.location = './fsm.html';
+        if(verifyValues(numStates, numAlphabet, machine)){
+            localStorage.setItem('numStates', numStates);
+            localStorage.setItem('numAlphabet', numAlphabet);
+            localStorage.setItem('machine', machine);
+            window.document.location = './fsm.html';
+        }
+        else{
+            alert(ERROR);
+        }
+        
     };
+
+    const verifyValues = function(numStates, numAlphabet, machine){
+        var ns = (numStates > 0) && (numStates % 1 == 0);
+        var na = (numAlphabet > 0) && (numAlphabet % 1 == 0);
+        var m = (machine == "moore") || (machine == "mealy");
+        return ns && na && m;
+    }
 
     //Public Values
     return {

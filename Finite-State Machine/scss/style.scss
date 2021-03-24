@@ -1,127 +1,126 @@
-@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css?family=Mukta:700');
 
-@import "compass/css3";
+$bg: #f3f8fa;
+$white: #fff;
+$black: #282936;
 
-$matrix-font-size: 18px;
-$matrix-line-height: 24px;
-$matrix-color: lighten(green, 50%);
-$matrix-width: 32;
-$matrix-height: 24;
-$matrix-characters: ラ ド ク リ フ マ ラ ソ ン わ た し ワ タ シ ん ょ ン ョ た ば こ タ バ コ と う き ょ う ト ウ キ ョ ウ;
-
-$frames-count: $matrix-height;
-
-@mixin keyframes($name) {
-  @-webkit-keyframes #{$name} { @content }
-  @-moz-keyframes #{$name} { @content }
-  @-o-keyframes #{$name} { @content }
-  @keyframes #{$name} { @content }
+@mixin transition($property: all, $duration: 0.45s, $ease: cubic-bezier(0.65,0,.076,1)) {
+  transition: $property $duration $ease;
 }
 
-@mixin animation($value) {
-  -webkit-animation: $value;
-  -moz-animation: $value;
-  -ms-animation: $value;
-  -o-animation: $value;
-  animation: $value;
-}
-
-@function rand($min: 1, $max: 100) {
-  @return random($max - $min) + $min;
-}
-
-@function random-character() {
-  $length: length($matrix-characters);
-  @return nth($matrix-characters, rand($max: $length));
-}
-
-@function new-column($height) {
-  $result: ();
-  $length: length($matrix-characters);
-  @for $i from 1 through $height {
-    $result: append($result, random-character());
+* {
+  box-sizing: border-box;
+  &::before, &::after {
+    box-sizing: border-box;
   }
-  @return $result;
-}
-
-@function create-columns($number) {
-  $columns: ();
-  @for $i from 1 through $height {
-    $columns: append($columns, new-column($matrix-height));
-  }
-  @return $columns;
 }
 
 body {
-  font-family: courier;
-  background: black;
-  overflow: hidden;
+  font-family: 'Mukta', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0;
-  padding: 0;
-  text-align: center;
+  min-height: 100vh;
+  background: $bg;
 }
 
-.matrix {
-  display: block;
-  list-style: none;
+button {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  background: transparent;
   padding: 0;
-  margin: 0;
-  color: $matrix-color;
-  font-size: $matrix-font-size;
-  line-height: $matrix-line-height;
-  overflow: hidden;
-  width: 100%;
-  white-space: nowrap;
-}
-
-@for $i from 1 through $matrix-width {
-  $column-height: rand(4, $matrix-height);
-  $column-position: rand(1, $matrix-height);
-  $column: new-column($matrix-height);
-
-  .matrix li:nth-child(#{$i}) {
-    position: relative;
-    display: inline-block;
-    white-space: normal;
-    vertical-align: top;
-
-    &:before {
+  font-size: inherit;
+  font-family: inherit;
+  &.learn-more {
+    width: 12rem;
+    height: auto;
+    .circle {
+      @include transition(all, 0.45s, cubic-bezier(0.65,0,.076,1));
+      position: relative;
       display: block;
-      width: 1em;
-      content: "#{$column}";
+      margin: 0;
+      width: 3rem;
+      height: 3rem;
+      background: $black;
+      border-radius: 1.625rem;
+      .icon {
+        @include transition(all, 0.45s, cubic-bezier(0.65,0,.076,1));
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        background: $white;
+        &.arrow {
+          @include transition(all, 0.45s, cubic-bezier(0.65,0,.076,1));
+          left: 0.625rem;
+          width: 1.125rem;
+          height: 0.125rem;
+          background: none;
+          &::before {
+            position: absolute;
+            content: '';
+            top: -0.25rem;
+            right: 0.0625rem;
+            width: 0.625rem;
+            height: 0.625rem;
+            border-top: 0.125rem solid #fff;
+            border-right: 0.125rem solid #fff;
+            transform: rotate(45deg);
+          }
+        }
+      }
     }
-
-    &:after {
-      @include box-sizing(border-box);
-      @include background(linear-gradient(
-        rgba(black, 1) 0,
-        rgba(black, 0) ($matrix-line-height * ($column-height - 1)),
-        rgba(black, 1) ($matrix-line-height * ($column-height - 1)),
-        rgba(black, 1) ($matrix-line-height * $matrix-height)
-      ) 0 ($matrix-line-height * ($column-position - $column-height)) repeat
-      );
-      display: block;
+    .button-text {
+      @include transition(all, 0.45s, cubic-bezier(0.65,0,.076,1));
       position: absolute;
-      width: 100%;
-      height: 100%;
       top: 0;
       left: 0;
-      color: white;
-      content: "#{nth($column, $column-position)}";
-      padding-top: ($column-position - 1) * $matrix-line-height;
-      overflow: hidden;
-      @include animation(($frames-count * 80ms) column-#{$i} infinite steps(1, start));
+      right: 0;
+      bottom: 0;
+      padding: 0.75rem 0;
+      margin: 0 0 0 1.85rem;
+      color: $black;
+      font-weight: 700;
+      line-height: 1.6;
+      text-align: center;
+      text-transform: uppercase;
     }
   }
-
-  @include keyframes(column-#{$i}) {
-    @for $frame from 1 through $frames-count {
-      @if $column-position > $matrix-height { $column-position: 1; }
-      #{100% * ($frame - 1) / $frames-count} {
-        background-position: 0 ($matrix-line-height * ($column-position - $column-height));
-        padding-top: ($column-position - 1) * $matrix-line-height;
+  &:hover {
+    .circle {
+      width: 100%;
+      .icon {
+        &.arrow {
+        background: $white;
+        transform: translate(1rem, 0);
+        }
       }
-      $column-position: $column-position + 1;
     }
+    .button-text {
+      color: $white;
+    }
+  }
+}
+
+@supports (display: grid) {
+  body {
+    display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 0.625rem;
+  grid-template-areas: ". main main ." ". main main .";
+  }
+  
+  #container {
+    grid-area: main;
+    align-self: center;
+    justify-self: center;
   }
 }

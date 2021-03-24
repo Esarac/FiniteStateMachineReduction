@@ -1,20 +1,13 @@
-//Tags [Hacer],[Terminar],[Organizar]
-
-/**
- * 
- * @param {Array} a 
- * @param {Array} b 
- * @returns {Boolean}
- */
-const arrayEquals = function(a, b) {//[Organizar]
-    return Array.isArray(a) &&
-      Array.isArray(b) &&
-      a.length === b.length &&
-      a.every((val, index) => val === b[index]);
-};
+const ALP_ERROR = "Alphabet error";
+const STT_ERROR = "State transition error";
+const OUT_ERROR = "Output error";
 
 //Ui
+/**
+ * All the user interface methods.
+ */
 const Ui = (function(){
+
     //Constants
     //~Attributes
     const STATES = "States";
@@ -33,6 +26,9 @@ const Ui = (function(){
     var outputTextBoxes = [];
 
     //General
+    /**
+     * Generate the initial HTML table.
+     */
     const generateInitialTable = function(){
         var numStates = localStorage.getItem('numStates');
         numStates = parseInt(numStates, 10);
@@ -51,14 +47,11 @@ const Ui = (function(){
         }
     };
 
+    /**
+     * Generate the final HTML table (Reduced machine).
+     */
     const generateFinalTable = function(){
-        if(verifyEmptyFields()){
-            alert("Fill the empty fields!");
-        }
-        else if(verifyValueFields()){
-            alert("Some values are incorrect!");
-        }
-        else{
+        try{
             var mach = null;
             
             // Original
@@ -91,8 +84,15 @@ const Ui = (function(){
                 mealyGenerateFinalTable(reduced);
             }
         }
+        catch(err){
+            alert(err.message);
+        }
     };
 
+    /**
+     * Get the alphabet values from the initial table. Also, store the AlphabetTextBoxes from the HTML.
+     * @returns {Array} Alphabet(Array of strings)
+     */
     const obtainInitialAlphabet = function(){
         var array = [];
 
@@ -104,6 +104,10 @@ const Ui = (function(){
         return array;
     };
 
+    /**
+     * Get the transition table values from the initial table. Also, store the StateTableTextBoxes from the HTML.
+     * @returns {Matrix} Transition Table(Matrix[state][alphabet] of numbers)
+     */
     const obtainInitialStateTable = function(){
         var matrix = [];
 
@@ -118,9 +122,9 @@ const Ui = (function(){
         
         return matrix;
     };
-
+    
     /**
-     * 
+     * Remove all the children of a HTML node.
      * @param {Node} parent 
      */
     const removeAllChildNodes = function(parent) {
@@ -129,50 +133,12 @@ const Ui = (function(){
         }
     }
 
-    /**
-     * 
-     * @returns {Boolean}
-     */
-    const verifyEmptyFields = function(){//[Terminar]
-        //Verificar si estado existe, verificar que alphabeto no repetido y con valores (no se si colocarlo automatico)
-        var empty = false;
-    
-        //AlphabetTextBoxes
-        for(i = 0; (i < alphabetTextBoxes.length) && (!empty); i++){
-            if(alphabetTextBoxes[i].value == ""){
-                empty = true;
-            }
-        }
-    
-        //StateTableTextBoxes
-        for(i = 0; (i < stateTableTextBoxes.length) && (!empty); i++){
-            for(j = 0; (j < stateTableTextBoxes[i].length) && (!empty); j++){
-                if(stateTableTextBoxes[i][j].value == ""){
-                    empty = true;
-                }
-            }
-        }
-        
-        return empty;
-    };
-
-    const verifyValueFields =function(){
-        var incorrect = false;
-
-        //StateTableTextBoxes
-        for(i = 0; (i < stateTableTextBoxes.length) && (!incorrect); i++){
-            for(j = 0; (j < stateTableTextBoxes[i].length) && (!incorrect); j++){
-                var num = stateTableTextBoxes[i][j].value;
-                if( ((0 > num) || (num >= stateTableTextBoxes.length)) || (num%1!=0) ){
-                    incorrect = true;
-                }
-            }
-        }
-
-        return incorrect;
-    }
-
     //Moore
+    /**
+     * Generate the moore initial HTML table.
+     * @param {Number} numStates 
+     * @param {Number} numAlphabet 
+     */
     const mooreGenerateInitialTable = function(numStates, numAlphabet){
 
         //Table
@@ -250,6 +216,10 @@ const Ui = (function(){
         //...
     };
 
+    /**
+     * Generate the moore final HTML table.
+     * @param {Moore} machine 
+     */
     const mooreGenerateFinalTable = function(machine){
 
         //Table
@@ -303,6 +273,10 @@ const Ui = (function(){
         //...
     };
 
+    /**
+     * Get the output values from the initial table. Also, store the OutputTextBoxes from the HTML.
+     * @returns {Array} Outputs(Array of strings)
+     */
     const mooreObtainInitialOutputs = function(){
         var array = [];
 
@@ -315,6 +289,11 @@ const Ui = (function(){
     };
     
     //Mealy
+    /**
+     * Generate the mealy initial HTML table.
+     * @param {Number} numStates 
+     * @param {Number} numAlphabet 
+     */
     const mealyGenerateInitialTable = function(numStates, numAlphabet){
         //Table
         var table = document.getElementById(INITIAL_TABLE);
@@ -391,6 +370,10 @@ const Ui = (function(){
         //...
     };
 
+    /**
+     * Generate the mealy final HTML table.
+     * @param {Moore} machine 
+     */
     const mealyGenerateFinalTable = function(machine){
         //Table
         var table = document.getElementById(FINAL_TABLE);
@@ -435,6 +418,10 @@ const Ui = (function(){
         //...
     };
     
+    /**
+     * Get the output values from the initial table. Also, store the OutputTextBoxes from the HTML.
+     * @returns {Matrix} Outputs(Matrix[state][alphabet] of strings)
+     */
     const mealyObtainInitialOutputs = function(){
         var matrix = [];
 
@@ -458,19 +445,122 @@ const Ui = (function(){
 
 })();
 
+//Util
+/**
+ * All the utility methods.
+ */
+const Util = (function(){
+
+    //Methods
+    /**
+     * Check the equality of two arrays.
+     * @param {Array} a 
+     * @param {Array} b 
+     * @returns {Boolean}
+     */
+    const arrayEquals = function(a, b) {
+        return Array.isArray(a) &&
+        Array.isArray(b) &&
+        a.length === b.length &&
+        a.every((val, index) => val === b[index]);
+    };
+
+    /**
+     * Check the equality of two partitions.
+     * @param {Array} a - Partition (Array of Blocks)
+     * @param {Array} b - Partition (Array of Blocks)
+     * @returns {Boolean}
+     */
+    const partitionEquals = function(a, b){
+        var eq = false;
+
+        if(a.length == b.length){
+            eq = true;
+
+            for(var bl = 0; (bl < a.length) && eq; bl++){
+                if(!Util.arrayEquals(a[bl], b[bl])){
+                    eq = false;
+                }
+            }
+        }
+
+        return eq;
+    };
+
+    /**
+     * Returns the block number of the current state.
+     * @param {Array} partition - Partition (Array of Blocks)
+     * @param {Number} element - State
+     * @returns {Number}
+     */
+    const positionBlock = function(partition, element){
+        var block;
+
+        var run = true;
+        for(var i = 0; (i < partition.length) && run; i++){
+            for(var j = 0; (j < partition[i].length) && run; j++){
+                if(partition[i][j] == element){
+                    block = i;
+                    run = false;
+                }
+            }
+        }
+
+        return block;
+    };
+
+    /**
+     * Check if to states are in the same block.
+     * @param {Array} partition - Partition (Array of Blocks)
+     * @param {Number} a - State
+     * @param {Number} b - State
+     * @returns {Boolean}
+     */
+    const verifySameBlock = function(partition, a, b){
+        return Util.positionBlock(partition, a) == Util.positionBlock(partition, b);
+    };
+
+    //Public
+    return {
+        arrayEquals : arrayEquals,
+        partitionEquals : partitionEquals,
+        positionBlock : positionBlock,
+        verifySameBlock : verifySameBlock
+    };
+
+})();
+
 //Machine
+/**
+ * Abstract class representing a Finite-State Machine.
+ */
 class Machine{
+
+    /**
+     * Machine constructor.
+     * @param {Array} alphabet - Alphabet(Array of strings)
+     * @param {Matrix} stateTable - Transition Table(Matrix[state][alphabet] of numbers)
+     */
     constructor(alphabet, stateTable){
         if(new.target === Machine)
             throw new Error("Abstract class, can not be instantiated");
+        if(!Machine.verifyAlphabet(alphabet))
+            throw new Error(ALP_ERROR);
+        if(!Machine.verifyStateTable(stateTable))
+            throw new Error(STT_ERROR);
         this.alphabet = alphabet;
         this.stateTable = stateTable;
     };
 
+    /**
+     * Make the step 2 and 3 of the partitioning algorithm and eliminate the unreachable states from the initial state.
+     * @param {Array} partition - Partition (Array of Blocks)
+     * @returns {Array} Partition (Array of Blocks)
+     */
     partitioning(partition) {
         var newPartition = [];
 
-        while(!Machine.partitionEquals(partition, newPartition)){
+        while(!Util.partitionEquals(partition, newPartition)){
             if(newPartition.length != 0){
                 partition = newPartition.map((x) => x);
             }
@@ -494,7 +584,7 @@ class Machine{
                         //console.log("~"+a+":");
                         //console.log(bfTransition);
                         //console.log(bsTransition);
-                        if(!Machine.verifySameBlock(partition, bfTransition, bsTransition)){
+                        if(!Util.verifySameBlock(partition, bfTransition, bsTransition)){
                             sameBlock = false;
                         }
                     }
@@ -544,6 +634,10 @@ class Machine{
         return partition;
     };
 
+    /**
+     * Generate a table that shows if from an initial state is reachable another state.
+     * @returns Matrix[initial state][final state] of booleans
+     */
     floydWarshall(){
         var distances = [];
 
@@ -579,52 +673,81 @@ class Machine{
         return distances;
     };
 
-    static partitionEquals(a, b){//[Organizar]
-        var eq = false;
+    /**
+     * Check if the alphabet: Is not empty, don't have lambda symbols and don't have repeated symbols.
+     * @param {Array} alphabet - Alphabet(Array of strings)
+     * @returns {Boolean}
+     */
+    static verifyAlphabet(alphabet){
+        //Not empty
+        var empty = (alphabet.length <= 0);
 
-        if(a.length == b.length){
-            eq = true;
+        //Elements not empty
+        var eEmpty = false;
 
-            for(var bl = 0; (bl < a.length) && eq; bl++){
-                if(!arrayEquals(a[bl], b[bl])){
-                    eq = false;
-                }
+        for(var i = 0; (i < alphabet.length) && !eEmpty; i++){
+            eEmpty = (alphabet[i] === "");
+        }
+
+        //Repeated
+        var repeated = false;
+        for(var i = 0; (i < alphabet.length) && !repeated; i++){
+            for(var j = i+1; (j < alphabet.length) && !repeated; j++){
+                repeated = (alphabet[i].valueOf() == alphabet[j].valueOf());
             }
         }
 
-        return eq;
-    };
+        return !empty && !eEmpty && !repeated;
+    }
 
-    static positionBlock(partition, element){//[Organizar]
-        var block;
+    /**
+     * Check if the transition table: Is not empty and have integer numbers on the expected range.
+     * @param {Matrix} stateTable - Transition Table(Matrix[state][alphabet] of numbers)
+     * @returns {Boolean}
+     */
+    static verifyStateTable(stateTable){
+        //Not empty
+        var empty = (stateTable.length <= 0);
 
-        var run = true;
-        for(var i = 0; (i < partition.length) && run; i++){
-            for(var j = 0; (j < partition[i].length) && run; j++){
-                if(partition[i][j] == element){
-                    block = i;
-                    run = false;
-                }
+        //Elements in range, integer and not empty
+        var incorrectElement = false;
+
+        for(var i = 0; (i < stateTable.length) && !incorrectElement; i++){
+            for(var j = 0; (j < stateTable[i].length) && !incorrectElement; j++){
+                incorrectElement = ( (0 > stateTable[i][j]) || (stateTable[i][j] >= stateTable.length) )
+                || (stateTable[i][j] % 1 != 0)
+                || (stateTable[i][j] === "");
             }
         }
 
-        return block;
-    };
-
-    static verifySameBlock(partition, a, b){//[Organizar]
-        return Machine.positionBlock(partition, a) == Machine.positionBlock(partition, b);
-    };
+        return !empty && !incorrectElement;
+    }
 
 }
 
 //Moore
+/**
+ * Class representing a Moore Finite-State Machine.
+ */
 class Moore extends Machine{
 
+    /**
+     * Moore constructor.
+     * @param {Array} alphabet - Alphabet(Array of strings)
+     * @param {Matrix} stateTable - Transition Table(Matrix[state][alphabet] of numbers)
+     * @param {Array} outputs - Outputs(Array of strings)
+     */
     constructor(alphabet, stateTable, outputs){
+        if(!Moore.verifyOutput(outputs))
+            throw new Error(OUT_ERROR);
         super(alphabet, stateTable);
         this.outputs = outputs;
     };
 
+    /**
+     * Generate the reduced machine of the current finite-state machine.
+     * @returns {Moore}
+     */
     createReducedMachine(){
         var partition = this.partition();
 
@@ -636,7 +759,7 @@ class Moore extends Machine{
             var rStateRow = []
             for(var a = 0; a < this.alphabet.length; a++){
                 var liderAlpValue = this.stateTable[lider][a];
-                rStateRow.push(Machine.positionBlock(partition, liderAlpValue));
+                rStateRow.push(Util.positionBlock(partition, liderAlpValue));
             }
             rStateTable.push(rStateRow);
         }
@@ -651,6 +774,10 @@ class Moore extends Machine{
         return new Moore(this.alphabet, rStateTable, rOutputs);
     };
 
+    /**
+     * Make the step 1, 2 and 3 of the partitioning algorithm and eliminate the unreachable states from the initial state.
+     * @returns {Array} Partition (Array of Blocks)
+     */
     partition(){
         //First Partition
         var partition = [];
@@ -677,17 +804,49 @@ class Moore extends Machine{
         return partition;
     };
 
+    /**
+     * Check if the outputs aren't lambda.
+     * @param {Array} outputs - Outputs(Array of strings)
+     * @returns {Boolean}
+     */
+    static verifyOutput(outputs){
+        //Elements not empty
+        var eEmpty = false;
+
+        for(var i = 0; (i < outputs.length) && !eEmpty; i++){
+            eEmpty = (outputs[i] === "");
+        }
+
+        return !eEmpty;
+    }
+
 }
 
 //Mealy
+/**
+ * Class representing a Mealy Finite-State Machine.
+ */
 class Mealy extends Machine{
 
+    /**
+     * Mealy constructor.
+     * @param {Array} alphabet - Alphabet(Array of strings)
+     * @param {Matrix} stateTable - Transition Table(Matrix[state][alphabet] of numbers)
+     * @param {Matrix} outputs - Outputs(Matrix[state][alphabet] of strings)
+     */
     constructor(alphabet, stateTable, outputs){
+        if(!Mealy.verifyOutput(outputs)){
+            throw new Error(OUT_ERROR);
+        }
         super(alphabet, stateTable);
         this.outputs = outputs;
     };
 
-    createReducedMachine(){//[Hacer]
+    /**
+     * Generate the reduced machine of the current finite-state machine.
+     * @returns {Mealy}
+     */
+    createReducedMachine(){
         var partition = this.partition();
 
         //State Table
@@ -698,7 +857,7 @@ class Mealy extends Machine{
             var rStateRow = []
             for(var a = 0; a < this.alphabet.length; a++){
                 var liderAlpValue = this.stateTable[lider][a];
-                rStateRow.push(Machine.positionBlock(partition, liderAlpValue));
+                rStateRow.push(Util.positionBlock(partition, liderAlpValue));
             }
             rStateTable.push(rStateRow);
         }
@@ -718,7 +877,11 @@ class Mealy extends Machine{
         return new Mealy(this.alphabet, rStateTable, rOutputs);
     };
 
-    partition(){//[Hacer]
+    /**
+     * Make the step 1, 2 and 3 of the partitioning algorithm and eliminate the unreachable states from the initial state.
+     * @returns {Array} Partition (Array of Blocks)
+     */
+    partition(){
         //First Partition
         var partition = [];
         for(var s = 0; s < this.outputs.length; s++){
@@ -751,5 +914,23 @@ class Mealy extends Machine{
 
         return partition;
     };
+
+    /**
+     * Check if the outputs aren't lambda.
+     * @param {Array} outputs - Outputs(Array of strings)
+     * @returns {Boolean}
+     */
+    static verifyOutput(outputs){
+        //Elements not empty
+        var eEmpty = false;
+
+        for(var i = 0; (i < outputs.length) && !eEmpty; i++){
+            for(var j = 0; (j < outputs[i].length) && !eEmpty; j++){
+                eEmpty = (outputs[i][j] === "");
+            }
+        }
+
+        return !eEmpty;
+    }
 
 }

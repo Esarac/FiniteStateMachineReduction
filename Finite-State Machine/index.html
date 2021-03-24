@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FINITE-STATE MACHINE REDUCTION</title>
-    <!-- <link href="./style.css" rel="stylesheet" type="text/css"></link> -->
+    <link rel ="stylesheet" href="scss/style.css">
     <script src="./js/index.js"></script>
 </head>
 <body>
@@ -25,7 +25,14 @@
         <label for="moore">Moore</label>
         <input type="radio" name="machine" id="moore" value="moore">
         <br>
-        <button type="button" onclick="Index.getValues()">Create Table</button>
+        <div id="container">
+            <button type="button" onclick="Index.getValues()" class="learn-more">
+              <span class="circle" aria-hidden="true">
+                <span class="icon arrow"></span>
+              </span>
+              <span class="button-text">Create Table</span>
+            </button>
+        </div>
     </form>
 </body>
 </html>
