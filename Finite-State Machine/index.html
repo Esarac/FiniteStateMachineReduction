@@ -10,29 +10,47 @@
 </head>
 <body>
     <h1>FINITE-STATE MACHINE REDUCTION</h1>
+
     <form>
-        <label for="numStates">Number of States: </label>
-        <input id="numStates" type="number" min="1" value="1">
-        <br>
-        <label for="numAlphabet">Number of elements in the Alphabet</label>
-        <input id="numAlphabet" type="number" min="1" value="1">
-        <br>
-        Machine:
-        <br>
-        <label for="mealy">Mealy</label>
-        <input type="radio" name="machine" id="mealy" value="mealy">
-        <br>
-        <label for="moore">Moore</label>
-        <input type="radio" name="machine" id="moore" value="moore">
-        <br>
-        <div id="container">
-            <button type="button" onclick="Index.getValues()" class="learn-more">
-              <span class="circle" aria-hidden="true">
-                <span class="icon arrow"></span>
-              </span>
-              <span class="button-text">Create Table</span>
-            </button>
-        </div>
+
+      <div class="form-group">
+        <span>State #</span>
+        <input class="form-field" id="states" type="number" value="1" min="1">
+      </div>
+
+      <br>
+
+      <div class="form-group">
+        <span>Alphabet #</span>
+        <input class="form-field" id="alphabet" type="number" value="1" min="1">
+      </div>
+
+      <br>
+
+      Machine:
+
+      <br>
+
+      <label for="mealy">Mealy</label>
+      <input type="radio" name="machine" id="mealy" value="mealy">
+
+      <br>
+
+      <label for="moore">Moore</label>
+      <input type="radio" name="machine" id="moore" value="moore">
+
+      <br>
+
+      <div id="container">
+        <button type="button" onclick="Index.getValues()" class="learn-more">
+          <span class="circle" aria-hidden="true">
+            <span class="icon arrow"></span>
+          </span>
+          <span class="button-text">Create Table</span>
+        </button>
+      </div>
+
     </form>
+
 </body>
 </html>

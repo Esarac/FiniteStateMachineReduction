@@ -163,6 +163,7 @@ const Ui = (function(){
 
             var alp = document.createElement("input");
             alp.setAttribute("value", String.fromCharCode(97+i));//~Value
+            alp.setAttribute("class", "table-field a");//~Class
             hi.appendChild(alp);
 
             alphabetTextBoxes.push(alp);//Add[AlphabetTextBoxes]
@@ -199,6 +200,7 @@ const Ui = (function(){
                 alpState.setAttribute("type", "number");//~Type
                 alpState.setAttribute("min", "0");//~Min
                 alpState.setAttribute("max", numStates-1);//~Max
+                alpState.setAttribute("class", "table-field s");//~Class
                 alpStateCell.appendChild(alpState);
 
                 stateLabels.push(alpState);//Add[StateTableTextboxes]
@@ -209,6 +211,7 @@ const Ui = (function(){
     
             var outState = document.createElement("input");
             outState.setAttribute("value", 0);//~Value
+            outState.setAttribute("class", "table-field o");//~Class
             outStateCell.appendChild(outState);
             
             outputTextBoxes.push(outState);//Add[OutputTextboxes]
@@ -317,6 +320,7 @@ const Ui = (function(){
 
             var alp = document.createElement("input");
             alp.setAttribute("value", String.fromCharCode(97+i));//~Value
+            alp.setAttribute("class", "table-field a");//~Class
             hi.appendChild(alp);
 
             alphabetTextBoxes.push(alp);//Add[AlphabetTextBoxes]
@@ -353,6 +357,7 @@ const Ui = (function(){
                 alpState.setAttribute("type", "number");//~Type
                 alpState.setAttribute("min", "0");//~Min
                 alpState.setAttribute("max", numStates-1);//~Max
+                alpState.setAttribute("class", "table-field s");//~Class
                 alpCell.appendChild(alpState);
 
                 stateLabels.push(alpState);//Add[StateTableTextboxes]
@@ -361,6 +366,7 @@ const Ui = (function(){
                 //Output
                 var alpOutput = document.createElement("input");// Label (Alphabet Output)
                 alpOutput.setAttribute("value", 0);//~Value
+                alpOutput.setAttribute("class", "table-field o");//~Class
                 alpCell.appendChild(alpOutput);
 
                 sOutputLabels.push(alpOutput);//Add[OutputTextboxes]

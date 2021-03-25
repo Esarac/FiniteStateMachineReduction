@@ -9,21 +9,27 @@
     <script src="./js/fsm.js"></script>
 </head>
 <body onload="Ui.generateInitialTable()">
-    <div>
-        <table id="table1">
-        </table>
-        <br>
-        <div id="container">
-            <button type="button" onclick="Ui.generateFinalTable()" class="learn-more">
-              <span class="circle" aria-hidden="true">
-                <span class="icon arrow"></span>
-              </span>
-              <span class="button-text">Create Table</span>
-            </button>
-        </div>
-        <br>
-        <table id="table2">
-        </table>
+
+  <form>
+
+    <table class="purple" id="table1"></table>
+
+    <br>
+
+    <div id="container">
+        <button type="button" onclick="Ui.generateFinalTable()" class="learn-more">
+          <span class="circle" aria-hidden="true">
+            <span class="icon arrow"></span>
+          </span>
+          <span class="button-text">Reduce Machine</span>
+        </button>
     </div>
+
+    <br>
+
+    <table class="purple" id="table2"></table>
+    
+  </form>
+
 </body>
 </html>

@@ -4,8 +4,8 @@ const Index = (function(){
     //Methods
     const getValues = function(){
         //Get Values
-        var numStates = document.getElementById("numStates").value;
-        var numAlphabet = document.getElementById("numAlphabet").value;
+        var numStates = document.getElementById("states").value;
+        var numAlphabet = document.getElementById("alphabet").value;
         var machine = document.querySelector('input[name=machine]:checked').value;
         
         //Pass Page
