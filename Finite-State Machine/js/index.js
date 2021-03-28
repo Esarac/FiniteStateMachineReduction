@@ -1,5 +1,5 @@
 const Index = (function(){
-    const ERROR = "Invalid values";
+    const ERROR = "The states and alphabet number must be a positive integer.";
 
     //Methods
     const getValues = function(){

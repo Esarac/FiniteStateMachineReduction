@@ -1,6 +1,6 @@
-const ALP_ERROR = "Alphabet error";
-const STT_ERROR = "State transition error";
-const OUT_ERROR = "Output error";
+const ALP_ERROR = "The alphabet must not have empty fields or repeated elements.";
+const STT_ERROR = "The state you are transitioning must exist.";
+const OUT_ERROR = "The outputs must not have empty fields.";
 
 //Ui
 /**
@@ -201,6 +201,7 @@ const Ui = (function(){
                 alpState.setAttribute("min", "0");//~Min
                 alpState.setAttribute("max", numStates-1);//~Max
                 alpState.setAttribute("class", "table-field s");//~Class
+                alpStateCell.appendChild(document.createTextNode("q"));
                 alpStateCell.appendChild(alpState);
 
                 stateLabels.push(alpState);//Add[StateTableTextboxes]
@@ -265,7 +266,7 @@ const Ui = (function(){
 
             for(var j = 0; j < machine.alphabet.length; j++){
                 var alpStateCell = document.createElement("td");//Text (Alphabet State)
-                alpStateCell.appendChild(document.createTextNode(machine.stateTable[i][j]));
+                alpStateCell.appendChild(document.createTextNode("q"+machine.stateTable[i][j]));
                 sRow.appendChild(alpStateCell);
             }
     
@@ -358,6 +359,7 @@ const Ui = (function(){
                 alpState.setAttribute("min", "0");//~Min
                 alpState.setAttribute("max", numStates-1);//~Max
                 alpState.setAttribute("class", "table-field s");//~Class
+                alpCell.appendChild(document.createTextNode("q"));
                 alpCell.appendChild(alpState);
 
                 stateLabels.push(alpState);//Add[StateTableTextboxes]
@@ -367,6 +369,7 @@ const Ui = (function(){
                 var alpOutput = document.createElement("input");// Label (Alphabet Output)
                 alpOutput.setAttribute("value", 0);//~Value
                 alpOutput.setAttribute("class", "table-field o");//~Class
+                alpCell.appendChild(document.createTextNode(","));
                 alpCell.appendChild(alpOutput);
 
                 sOutputLabels.push(alpOutput);//Add[OutputTextboxes]
@@ -417,7 +420,7 @@ const Ui = (function(){
 
             for(var j = 0; j < machine.alphabet.length; j++){
                 var alpStateCell = document.createElement("td");//Text (Alphabet State, Output)
-                alpStateCell.appendChild(document.createTextNode((machine.stateTable[i][j])+","+(machine.outputs[i][j])));
+                alpStateCell.appendChild( document.createTextNode("q"+(machine.stateTable[i][j])+","+(machine.outputs[i][j])) );
                 sRow.appendChild(alpStateCell);
             }
         }
@@ -441,7 +444,7 @@ const Ui = (function(){
         }
 
         return matrix;
-    }
+    };
 
     //Public
     return {

@@ -1,5 +1,17 @@
 /* Button */
 @import url("https://fonts.googleapis.com/css?family=Mukta:700");
+/* Import */
+@font-face {
+  font-family: ubuntu;
+  src: url(../fonts/Ubuntu/Ubuntu-Medium.ttf);
+}
+
+@font-face {
+  font-family: archivo;
+  src: url(../fonts/Archivo/Archivo-Italic-VariableFont_wdth\,wght.ttf);
+}
+
+/* Import */
 /*Otros*/
 @supports (display: grid) {
   body {
@@ -76,7 +88,7 @@ html {
 }
 
 body {
-  font-family: 'Mukta', sans-serif;
+  font-family: ubuntu;
   font-size: 1rem;
   line-height: 1.5;
   display: -webkit-box;
@@ -362,7 +374,7 @@ button:hover .button-text {
   line-height: 25px;
   font-size: 14px;
   font-weight: 500;
-  font-family: inherit;
+  font-family: ubuntu;
   border-radius: 6px;
   -webkit-appearance: none;
   color: var(--input-color);
@@ -496,6 +508,7 @@ th, td {
   border: 2px solid #0066ff;
   border-left: solid #0066ff 1px;
   border-top: solid #0066ff 1px;
+  font-family: inherit;
 }
 
 .fixed {
@@ -515,7 +528,8 @@ th, td {
   border: none;
   margin: auto;
   text-align: center;
-  width: 50%;
+  font-family: inherit;
+  width: 25%;
 }
 
 .table-field:focus {

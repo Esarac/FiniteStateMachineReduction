@@ -8,6 +8,19 @@ $black: #0066ff;
 $lightBlack: #0066ff44;
 $transparent: transparent;
 $nBlack: #282936;
+$font: /*'Mukta', sans-serif*/ubuntu;
+
+/* Import */
+@font-face {
+  font-family: ubuntu;
+  src: url(../fonts/Ubuntu/Ubuntu-Medium.ttf);
+}
+
+@font-face {
+  font-family: archivo;
+  src: url(../fonts/Archivo/Archivo-Italic-VariableFont_wdth\,wght.ttf);
+}
+/* Import */
 
 /*Otros*/
 @mixin transition($property: all, $duration: 0.45s, $ease: cubic-bezier(0.65,0,.076,1)) {
@@ -74,7 +87,7 @@ html {
 }
 
 body {
-  font-family: 'Mukta', sans-serif;
+  font-family: $font;
   font-size: 1rem;
   line-height: 1.5;
   display: flex;
@@ -331,7 +344,7 @@ button {
   line-height: 25px;
   font-size: 14px;
   font-weight: 500;
-  font-family: inherit;
+  font-family: $font;
   border-radius: 6px;
   -webkit-appearance: none;
   color: var(--input-color);
@@ -432,6 +445,7 @@ th,td{
 
   border-left:solid $black 1px;
   border-top:solid $black 1px;
+  font-family: inherit;
 }
 
 .fixed{
@@ -451,7 +465,8 @@ th,td{
   border: none;
   margin: auto;
   text-align:center;
-  width:50%;
+  font-family: inherit;
+  width:25%;
   &:focus {
     /*outline: none;*/
     outline: 1px solid $black;
@@ -461,6 +476,7 @@ th,td{
 
 .table-field.a, select, textarea{
   color: $white;
+  
   &:focus {
     /*outline: none;*/
     outline: 1px solid $white;
